@@ -3,7 +3,7 @@ import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import { CartContext } from '../context/CartContext';
 
 const CartScreen = ({ navigation }) => {
-    const { cart, removeFromCart } = useContext(CartContext);
+    const { cart, removeFromCart, increaseQuantity, decreaseQuantity } = useContext(CartContext);
 
     const getTotalPrice = () => {
         return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
@@ -17,12 +17,16 @@ const CartScreen = ({ navigation }) => {
                 renderItem={({ item }) => (
                     <View style={styles.listItem}>
                         <Text style={styles.itemText}>{item.name} - {item.quantity} x ${item.price}</Text>
-                        <Button title="Usuń" onPress={() => removeFromCart(item.id)} />
+                        <View style={styles.buttonsContainer}>
+                            <Button title="-" onPress={() => decreaseQuantity(item.id)} />
+                            <Button title="+" onPress={() => increaseQuantity(item.id)} />
+                            <Button title="Usuń" onPress={() => removeFromCart(item.id)} />
+                        </View>
                     </View>
                 )}
             />
             <Text style={styles.total}>Total: ${getTotalPrice()}</Text>
-            <Button title="Przejdź do płatności" onPress={() => navigation.navigate('PaymentScreen')} />
+            <Button title="Przejdź do sprawdzenia ceny" onPress={() => navigation.navigate('CheckPriceScreen')} />
         </View>
     );
 };
@@ -42,6 +46,9 @@ const styles = StyleSheet.create({
     },
     itemText: {
         fontSize: 18,
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
     },
     total: {
         fontSize: 24,

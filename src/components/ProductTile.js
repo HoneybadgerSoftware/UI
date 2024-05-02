@@ -1,28 +1,52 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useCart} from '../context/CartContext';
+import {Image, Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {LongPressGestureHandler, State} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 
 
 const ProductTile = ({product, onAddToCart}) => {
     const navigation = useNavigation();
-
-
+    const [modalVisible, setModalVisible] = useState(false);
+    const handleLongPress = ({nativeEvent}) => {
+        if (nativeEvent.state === State.ACTIVE) {
+            setModalVisible(true);
+        }
+    };
     return (
-        <TouchableOpacity
-            style={styles.tile}
-            onPress={() => navigation.navigate('ProductDetails', {product})}
-        >
-            <Image source={{uri: product.image}} style={styles.image}/>
-            <View style={styles.info}>
-                <Text style={styles.name}>{product.name}</Text>
-                <Text style={styles.price}>{`${product.price} zł`}</Text>
+        <LongPressGestureHandler onHandlerStateChange={handleLongPress} minDurationMs={2000}>
+            <TouchableOpacity style={styles.tile} onPress={() => navigation.navigate('ProductDetails', {product})}>
+                <Image source={{uri: product.image}} style={styles.image}/>
+                <View style={styles.info}>
+                    <Text style={styles.name}>{product.name}</Text>
+                    <Text style={styles.price}>{`${product.price} zł`}</Text>
+                    <TouchableOpacity onPress={() => onAddToCart(product)}>
+                        <Text style={styles.addToCart}>Dodaj do koszyka</Text>
+                    </TouchableOpacity>
+                </View>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}>
+                    <View style={{marginTop: 22}}>
+                        <View>
+                            <Text>{product.name}</Text>
+                            <Text>{product.price}</Text>
 
-                <TouchableOpacity onPress={() => onAddToCart(product)}>
-                    <Text style={styles.addToCart}>Dodaj do koszyka</Text>
-                </TouchableOpacity>
-            </View>
-        </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setModalVisible(!modalVisible);
+                                }}
+                            >
+                                <Text>Hide Modal</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+            </TouchableOpacity>
+        </LongPressGestureHandler>
     );
 };
 
@@ -33,8 +57,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         overflow: 'hidden',
         margin: 10,
-        elevation: 3, // cień dla Android
-        shadowOpacity: 0.3, // cień dla iOS
+        elevation: 3,
+        shadowOpacity: 0.3,
     },
     image: {
         width: '33%',

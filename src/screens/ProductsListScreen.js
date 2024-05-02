@@ -38,7 +38,13 @@ const ProductsListScreen = () => {
     }, [searchQuery, products]);
 
     const handleAddToCart = (product) => {
-        addToCart(product);
+            let productExists = cart.find(item => item.id === product.id);
+
+            if (productExists) {
+                productExists.quantity += 1;
+            } else {
+                addToCart({ ...product, quantity: 1 });
+            }
     };
 
     const headerTranslate = scrollY.interpolate({
