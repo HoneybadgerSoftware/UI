@@ -4,9 +4,8 @@ import {useCart} from '../context/CartContext';
 import {useNavigation} from '@react-navigation/native';
 
 
-const ProductTile = ({product}) => {
+const ProductTile = ({product, onAddToCart}) => {
     const navigation = useNavigation();
-    const {addToCart} = useCart();
 
 
     return (
@@ -19,7 +18,7 @@ const ProductTile = ({product}) => {
                 <Text style={styles.name}>{product.name}</Text>
                 <Text style={styles.price}>{`${product.price} zł`}</Text>
 
-                <TouchableOpacity onPress={() => addToCart(product)}>
+                <TouchableOpacity onPress={() => onAddToCart(product)}>
                     <Text style={styles.addToCart}>Dodaj do koszyka</Text>
                 </TouchableOpacity>
             </View>

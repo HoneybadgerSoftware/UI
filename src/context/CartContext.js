@@ -11,8 +11,12 @@ export const CartProvider = ({ children }) => {
         setCart(currentCart => [...currentCart, product]);
     };
 
+    const removeFromCart = productId => {
+        setCart(currentCart => currentCart.filter(product => product.id !== productId));
+    };
+
     return (
-        <CartContext.Provider value={{ cart, addToCart }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
             {children}
         </CartContext.Provider>
     );

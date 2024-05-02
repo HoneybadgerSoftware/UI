@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, FlatList, TextInput, Animated, StyleSheet} from 'react-native';
 import ProductTile from '../components/ProductTile';
 import axios from 'axios';
+import { useCart } from '../context/CartContext';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -9,22 +10,25 @@ const ProductsListScreen = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [page, setPage] = useState(1);
     const scrollY = useRef(new Animated.Value(0)).current;
-    const headerHeight = 50; // Wysokość dla nagłówka i paska wyszukiwania
+    const headerHeight = 50;
+    const { addToCart } = useCart();
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = async (page) => {
             try {
-                const response = await axios.get('http://<twój_backend>/products');
-                setProducts(response.data);
-                setFilteredProducts(response.data);
+                const response = await axios.get('http://products-dns-dvdvmxy4.hcp.polandcentral.azmk8s.io/products');
+                const productTiles = response.data.map(transformToProductTile);
+                setProducts(prevProducts => [...prevProducts, ...productTiles]);
+                setFilteredProducts(prevProducts => [...prevProducts, ...productTiles]);
             } catch (error) {
                 console.error('Błąd podczas pobierania produktów:', error);
             }
         };
 
-        fetchData();
-    }, []);
+        fetchData(page);
+    }, [page]);
 
     useEffect(() => {
         const filtered = products.filter(product =>
@@ -34,7 +38,7 @@ const ProductsListScreen = () => {
     }, [searchQuery, products]);
 
     const handleAddToCart = (product) => {
-        // logika dodawania do koszyka
+        addToCart(product);
     };
 
     const headerTranslate = scrollY.interpolate({
@@ -42,6 +46,15 @@ const ProductsListScreen = () => {
         outputRange: [0, -headerHeight],
         extrapolate: 'clamp',
     });
+
+    const transformToProductTile = (rawProduct) => {
+    return {
+        id: rawProduct.id,
+        name: rawProduct.name,
+        price: rawProduct.price,
+        image: rawProduct.image,
+    };
+};
 
     return (
         <View style={styles.container}>
@@ -61,6 +74,8 @@ const ProductsListScreen = () => {
                     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                     { useNativeDriver: true }
                 )}
+                onEndReached={() => setPage(prevPage => prevPage + 1)}
+                onEndReachedThreshold={0.5}
             />
         </View>
     );
