@@ -3,6 +3,7 @@ import {createDrawerNavigator, DrawerToggleButton} from '@react-navigation/drawe
 import ProductsListScreen from '../screens/ProductsListScreen';
 import CheckPriceScreen from '../screens/CheckPriceScreen';
 import CartScreen from '../screens/CartScreen';
+import AddProductsScreen from "../screens/AddProductsScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -16,6 +17,7 @@ function AppNavigator() {
             <Drawer.Screen name="Home" component={ProductsListScreen}/>
             <Drawer.Screen name="Sprawdź cenę" component={CheckPriceScreen}/>
             <Drawer.Screen name="Mój koszyk" component={CartScreen}/>
+            <Drawer.Screen name="Dodaj Produkty" component={AddProductsScreen}/>
         </Drawer.Navigator>
     );
 }
