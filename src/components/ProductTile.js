@@ -14,7 +14,6 @@ const ProductTile = ({product, onAddToCart}) => {
     };
     return (
         <LongPressGestureHandler onHandlerStateChange={handleLongPress} minDurationMs={2000}>
-            <TouchableOpacity style={styles.tile} onPress={() => navigation.navigate('ProductDetails', {product})}>
                 <Image source={{uri: product.image}} style={styles.image}/>
                 <View style={styles.info}>
                     <Text style={styles.name}>{product.name}</Text>
@@ -34,6 +33,8 @@ const ProductTile = ({product, onAddToCart}) => {
                         <View>
                             <Text>{product.name}</Text>
                             <Text>{product.price}</Text>
+                            <Text>{product.manufacturer}</Text>
+                            <Text>{product.description}</Text>
 
                             <TouchableOpacity
                                 onPress={() => {
@@ -45,7 +46,6 @@ const ProductTile = ({product, onAddToCart}) => {
                         </View>
                     </View>
                 </Modal>
-            </TouchableOpacity>
         </LongPressGestureHandler>
     );
 };
