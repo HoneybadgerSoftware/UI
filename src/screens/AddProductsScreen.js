@@ -18,7 +18,7 @@ const AddProductsScreen = () => {
             const response = await axios.get('http://products-dns-dvdvmxy4.hcp.polandcentral.azmk8s.io/location', { params: { name: shopName } });
 setShopId(response.data.shopId);
 
-const syncResponse = await axios.post('http://products-dns-dvdvmxy4.hcp.polandcentral.azmk8s.io/synchronizeProducts', {
+const syncResponse = await axios.post('http://products-dns-dvdvmxy4.hcp.polandcentral.azmk8s.io/productWorker', {
     shopId: response.data.shopId,
     data: products
 });
