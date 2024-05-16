@@ -18,7 +18,7 @@ const ProductsListScreen = () => {
     useEffect(() => {
         const fetchData = async (page) => {
             try {
-                const response = await axios.get('http://products-dns-dvdvmxy4.hcp.polandcentral.azmk8s.io/products');
+                const response = await axios.get('http://localhost:9000/products');
                 const productTiles = response.data.map(transformToProductTile);
                 setProducts(prevProducts => [...prevProducts, ...productTiles]);
                 setFilteredProducts(prevProducts => [...prevProducts, ...productTiles]);

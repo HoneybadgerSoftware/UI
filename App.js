@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import AppNavigator from "./src/navigation/AppNavigator";
 import {CartProvider} from './src/context/CartContext';
+import { CartContext } from './src/context/CartContext';
 
 const Drawer = createDrawerNavigator();
 
@@ -12,7 +13,6 @@ const App = () => {
             <NavigationContainer>
                 <AppNavigator/>
             </NavigationContainer>
-
         </CartProvider>
     );
 };

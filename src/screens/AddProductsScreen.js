@@ -5,12 +5,12 @@ import axios from 'axios';
 const AddProductsScreen = () => {
     const [shopName, setShopName] = useState('');
     const [shopId, setShopId] = useState(null);
-    const [product, setProduct] = useState({ name: '', manufacturer: '', description: '', price: '', imageUrl: '' });
+    const [product, setProduct] = useState({ name: '', manufacturer: '', description: '', price: ''});
     const [products, setProducts] = useState([]);
 
     const addProduct = () => {
         setProducts([...products, product]);
-        setProduct({ name: '', manufacturer: '', description: '', price: '', imageUrl: '' });
+        setProduct({ name: '', manufacturer: '', description: '', price: ''});
     };
 
     const synchronizeProducts = async () => {
@@ -36,7 +36,6 @@ return (
         <TextInput placeholder="Producent" value={product.manufacturer} onChangeText={(text) => setProduct({ ...product, manufacturer: text })} />
         <TextInput placeholder="Opis" value={product.description} onChangeText={(text) => setProduct({ ...product, description: text })} />
         <TextInput placeholder="Cena" value={product.price} onChangeText={(text) => setProduct({ ...product, price: text })} />
-        <TextInput placeholder="URL obrazu" value={product.imageUrl} onChangeText={(text) => setProduct({ ...product, imageUrl: text })} />
         <Button title="Wprowadź produkt" onPress={addProduct} />
         <Button title="Wyślij informacje o produktach do bazy danych" onPress={synchronizeProducts} />
     </View>

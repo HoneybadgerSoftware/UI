@@ -12,8 +12,7 @@ const ProductTile = ({product, onAddToCart}) => {
             setModalVisible(true);
         }
     };
-    return (
-        <LongPressGestureHandler onHandlerStateChange={handleLongPress} minDurationMs={2000}>
+    return (<LongPressGestureHandler onHandlerStateChange={handleLongPress} minDurationMs={2000}>
                 <Image source={{uri: product.image}} style={styles.image}/>
                 <View style={styles.info}>
                     <Text style={styles.name}>{product.name}</Text>
@@ -39,8 +38,7 @@ const ProductTile = ({product, onAddToCart}) => {
                             <TouchableOpacity
                                 onPress={() => {
                                     setModalVisible(!modalVisible);
-                                }}
-                            >
+                                }}>
                                 <Text>Hide Modal</Text>
                             </TouchableOpacity>
                         </View>

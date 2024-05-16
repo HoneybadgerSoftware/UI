@@ -1,22 +1,27 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
-import { CartContext } from '../context/CartContext';
-import Geolocation from '@react-native-community/geolocation';
+// import { CartContext } from '../context/CartContext';
+import * as Location from 'expo-location';
 import axios from 'axios';
 
 const CheckPriceScreen = () => {
-    const { cart } = useContext(CartContext);
+    // const { cart } = useContext(CartContext);
     const [shareLocation, setShareLocation] = useState(false);
     const [radius, setRadius] = useState('');
     const [location, setLocation] = useState(null);
     const [shopData, setShopData] = useState(null);
 
-    const handleShareLocation = () => {
-        Geolocation.getCurrentPosition(info => {
-            setLocation({
-                latitude: parseFloat(info.coords.latitude.toFixed(6)),
-                longitude: parseFloat(info.coords.longitude.toFixed(6))
-            });
+    const handleShareLocation = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            console.error('Permission to access location was denied');
+            return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation({
+            latitude: parseFloat(location.coords.latitude.toFixed(6)),
+            longitude: parseFloat(location.coords.longitude.toFixed(6))
         });
     };
 
